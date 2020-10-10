@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jthuy <jthuy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bdrinkin <bdrinkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/22 14:11:05 by jthuy             #+#    #+#             */
-/*   Updated: 2020/10/09 16:58:13 by jthuy            ###   ########.fr       */
+/*   Updated: 2020/10/10 19:22:24 by bdrinkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,29 @@
 # include "SDL.h"
 # include "SDL_image.h"
 # include "SDL_mixer.h"
+
+typedef struct			s_wad_head
+{
+	char				wad_type[5];
+	uint32_t			dir_count;
+	uint32_t			dir_offset;
+}						t_wad_head;
+
+typedef struct			s_dir
+{
+	uint32_t			lump_offset;
+	uint32_t			lump_size;
+	char				lump_name[9];
+	struct s_dir		*next;
+}						t_dir;
+
+typedef struct			s_wad
+{
+	uint8_t				*map;
+	struct s_dir		*dir;
+	struct s_wad_head	head;
+}						t_wad;
+
 
 typedef struct		s_sdl
 {

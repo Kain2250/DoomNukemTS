@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jthuy <jthuy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bdrinkin <bdrinkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 15:30:17 by jthuy             #+#    #+#             */
-/*   Updated: 2020/10/09 18:18:33 by jthuy            ###   ########.fr       */
+/*   Updated: 2020/10/10 19:29:05 by bdrinkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,33 @@
 
 # include <stdio.h>  //   <----- NEED DELL!!!!!!
 # include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
 
 # include "const.h"
 # include "struct.h"
+
+/*
+** bdrinkin.c
+*/
+
+size_t			ft_strlen(const char *s);
+void			ft_putstr(char *s);
+void			ft_putendl_fd(char const *s, int fd);
+int				put_error_sys(char *error);
+void			ft_bzero(void *s, size_t n);
+void			*ft_memalloc(size_t size);
+int				ft_strcmp(const char *s1, const char *s2);
+void			clear_wad_dir(t_dir *dir);
+bool			wad_loader(t_wad *doom, char *path);
+void			read_head_data(const uint8_t *data, int offset, t_wad_head *head);
+void			read_dir_data(const uint8_t *data, int offset, t_dir *dir);
+uint32_t		find_offset_lump(t_dir *dir, char *lable, char *name_map);
+uint32_t		find_size_lump(t_dir *dir, char *lable, char *name_map);
+bool			wad_reader(t_wad *doom);
+void			wad_get_vertex(t_wad *doom, t_vlist *vert, char *name_map);
 
 /*
 ** main.c

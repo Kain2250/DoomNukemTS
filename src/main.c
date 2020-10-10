@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jthuy <jthuy@student.42.fr>                +#+  +:+       +#+        */
+/*   By: bdrinkin <bdrinkin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 15:30:21 by jthuy             #+#    #+#             */
-/*   Updated: 2020/10/09 20:15:18 by jthuy            ###   ########.fr       */
+/*   Updated: 2020/10/10 20:18:00 by bdrinkin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-int		main()
+int		main(int ac, char **av)
 {
 	t_sdl		*sdl;
 	t_map		*map;
@@ -20,19 +20,51 @@ int		main()
 	t_vlist		*vlist;
 	t_llist		*llist;
 	t_bsp		*bsp_tree;
+	t_wad		*wad;
 
 	sdl = init_sdl();
 	clear_screen(sdl);
-	map = init_map(0);
-	player = init_player(map);
-	vlist = set_vlist(map);
+	if (ac == 2)
+	{
+		wad = (t_wad *)malloc(sizeof(t_wad));
+		if (wad_loader(wad, "map.wad") == false)
+		{
+			write(2, "Error WAD load\n", 15);
+			exit(-1);
+		}
+		wad_reader(wad);
+		vlist = (t_vlist *)ft_memalloc(sizeof(t_vlist));
+		wad_get_vertex(wad, vlist, "E1M1");
+		player = (t_player *)malloc(sizeof(t_player));
+		player->crd[X] = 20;
+		player->crd[Y] = 20;
+		player->direction = 0;
+		player->index = 5;
+	}
+	else
+	{
+		map = init_map(0);
+		player = init_player(map);
+		vlist = set_vlist(map);
+	}
+
+	t_vlist		*crs = vlist;
+	while (crs)
+	{
+		printf("%d		%d\n", crs->crd[0], crs->crd[1]);
+		crs = crs->next;
+	}
+	exit(0);
+	
+
+
+
+
 	llist = set_llist(vlist);
 
 	// NEED SORT LLIST WORK IN PROGRESS
 	// sort_llist(llist);
-
 	bsp_tree = set_tree(llist);
-
 	draw_map(sdl, bsp_tree, map, player);
 
 
@@ -42,6 +74,8 @@ int		main()
 			draw_win(sdl, player);
 		SDL_UpdateWindowSurface(sdl->window);
 	}
+	if (ac == 2)
+		clear_wad_dir(wad->dir);
 	return (0);
 }
 
